@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magic Christmas - Final Clean</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
@@ -72,8 +73,27 @@
             }
         }
 
+        @keyframes shimmer {
+            0% {
+                filter: hue-rotate(0deg);
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            }
+
+            50% {
+                filter: hue-rotate(30deg);
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 10px #FFD700;
+                transform: scale(1.05);
+            }
+
+            100% {
+                filter: hue-rotate(0deg);
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            }
+        }
+
         /* Camera Preview Vandiep */
         #camera-preview {
+            display: none;
             position: absolute;
             top: 15px;
             right: 15px;
@@ -117,8 +137,9 @@
     <!-- UI Vandiep -->
     <div id="ui-layer">
         <!-- Vandiep -->
-        <div class="guide">
-            🖐 <b>Open:</b> Explode &nbsp;|&nbsp; 🫶 <b>Heart:</b> Love &nbsp;|&nbsp; ✊ <b>Fist:</b> Tree
+        <div class="guide"
+            style="font-family: 'Great Vibes', cursive; font-size: 35px; background: linear-gradient(to right, #FFD700, #FDB931, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0px 0px 15px rgba(255, 215, 0, 0.6); animation: shimmer 3s infinite linear;">
+            Merry Christmas Phạm Hồng Yến ❤️
         </div>
         <button id="btnStart" onclick="startSystem()">START MAGIC</button>
     </div>
@@ -315,15 +336,10 @@
 
         function createPhotos() {
             const geo = new THREE.PlaneGeometry(8, 8);
-            const borderGeo = new THREE.PlaneGeometry(9, 9);
-            const borderMat = new THREE.MeshBasicMaterial({ color: 0xFFD700 });
 
             for (let i = 0; i < 5; i++) {
                 const mat = new THREE.MeshBasicMaterial({ map: photoTextures[i], side: THREE.DoubleSide });
                 const mesh = new THREE.Mesh(geo, mat);
-                const border = new THREE.Mesh(borderGeo, borderMat);
-                border.position.z = -0.1;
-                mesh.add(border);
                 mesh.visible = false; mesh.scale.set(0, 0, 0);
                 scene.add(mesh);
                 photoMeshes.push(mesh);
